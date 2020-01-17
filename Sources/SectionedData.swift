@@ -89,6 +89,18 @@ public class SectionedData<SectionEnum: ExtDifferentiable> {
         self.append(item)
     }
     
+    public func appendOrReplace(_ item: ArraySection<SectionEnum, BaseTableCellData>) {
+        let tempItem = self.items.filter { (model) -> Bool in
+            return model.model == item.model
+            }.first
+        
+        if tempItem != nil {
+            self.removeAllBy(item.model)
+        }
+        
+        self.append(item)
+    }
+    
     public func replaceData(_ data: BaseTableCellData, section: SectionEnum) {
         var items = [BaseTableCellData]()
         self.items.forEach { (item) in
