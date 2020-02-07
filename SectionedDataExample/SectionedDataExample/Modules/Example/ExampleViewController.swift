@@ -16,14 +16,14 @@ private typealias Section = ArraySection<ExampleSection, BaseTableCellData>
 enum ExampleSection: Int, ExtDifferentiable {
     case dateTime
     case time
-
+    
     func raw() -> Int {
         return self.rawValue
     }
 }
 
 protocol ExampleView: class {
-
+    func show()
 }
 
 class ExampleViewController: UIViewController {
@@ -51,35 +51,42 @@ class ExampleViewController: UIViewController {
     }
 
     @objc func add() {
-        
-        self.data.itemsAt(.time).forEach { (data) in
-            print((data as? ExampleInfoTableCellData)?.name ?? "none")
-        }
-
-        let df = DateFormatter()
-        if Bool.random() {
-            df.dateFormat = "dd.MM.yyyy HH:mm:ss"
-            let data = ExampleInfoTableCellData("\(df.string(from: Date()))")
-            self.dataInput.append(Section(model: .dateTime, elements: [data]))
-        } else {
-            df.dateFormat = "HH:mm:ss"
-            let data = ExampleInfoTableCellData("\(df.string(from: Date()))")
-            self.dataInput.append(Section(model: .time, elements: [data]))
-        }
-        self.reloadAnimated()
+        self.show()
     }
 
     func reloadAnimated() {
+        
         let changeset = StagedChangeset(source: self.data.items, target: self.dataInput.items)
-        self.tableView.reload(using: changeset, with: .automatic, setData: { (data) in
-            self.data.reload(data)
-        })
+        
+            self.tableView.reload(using: changeset, with: .none, setData: { (data) in
+                self.data.reload(data)
+            })
     }
 
 }
 
 extension ExampleViewController: ExampleView {
-
+    
+    func show() {
+        
+        let df = DateFormatter()
+    
+        
+        if Bool.random() {
+            df.dateFormat = "dd.MM.yyyy HH:mm:ss"
+            let time = "\(df.string(from: Date()))"
+            let section = Section(model: .dateTime, elements: [ExampleInfoTableCellData(time)], header: ExampleInfoTableCellData(time))
+            self.dataInput.appendOrReplace(section)
+        } else {
+            df.dateFormat = "HH:mm:ss"
+            let time = "\(df.string(from: Date()))"
+            let section = Section(model: .time, elements: [ExampleInfoTableCellData(time)], header: ExampleInfoTableCellData(time))
+            self.dataInput.appendOrReplace(section)
+        }
+    
+        self.reloadAnimated()
+        
+    }
 }
 
 extension ExampleViewController: UITableViewDataSource {
@@ -90,6 +97,13 @@ extension ExampleViewController: UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return self.data.numberOfItemsIn(section)
+    }
+    
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        if let item = self.data.items[section].header as? ExampleInfoTableCellData {
+            return item.name
+        }
+        return nil
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {

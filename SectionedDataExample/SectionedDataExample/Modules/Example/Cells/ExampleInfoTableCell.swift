@@ -9,25 +9,19 @@
 import UIKit
 import SectionedData
 
-class ExampleInfoTableCellData: BaseTableCellData {
-
-    static let kIdentifier = "ExampleInfoTableCellData".hashValue
+class ExampleInfoTableCellData: BaseTableCellData, DiffComparable {
 
     var name: String?
 
     init(_ name: String) {
-        super.init(ExampleInfoTableCellData.kIdentifier)
+        super.init(UUID().uuidString.hashValue)
         self.name = name
     }
-
-    func isContentEqual(to source: ExampleInfoTableCellData) -> Bool {
-        return self == source
+    
+    func isEqual(lhs: BaseTableCellData, rhs: BaseTableCellData) -> Bool {
+        guard let rhs = (rhs as? ExampleInfoTableCellData), let lhs = (lhs as? ExampleInfoTableCellData) else { return true }
+        return lhs.identifier == rhs.identifier && lhs.name == rhs.name
     }
-
-    public static func == (lhs: ExampleInfoTableCellData, rhs: ExampleInfoTableCellData) -> Bool {
-        return lhs.name == rhs.name
-    }
-
 }
 
 class ExampleInfoTableCell: UITableViewCell {

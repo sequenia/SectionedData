@@ -1,12 +1,12 @@
 PODS:
-  - DifferenceKit (1.0.0):
-    - DifferenceKit/Core (= 1.0.0)
-    - DifferenceKit/UIKitExtension (= 1.0.0)
-  - DifferenceKit/Core (1.0.0)
-  - DifferenceKit/UIKitExtension (1.0.0):
+  - DifferenceKit (1.1.5):
+    - DifferenceKit/Core (= 1.1.5)
+    - DifferenceKit/UIKitExtension (= 1.1.5)
+  - DifferenceKit/Core (1.1.5)
+  - DifferenceKit/UIKitExtension (1.1.5):
     - DifferenceKit/Core
-  - SectionedData (0.1.0):
-    - DifferenceKit (~> 1.0.0)
+  - SectionedData (0.1.6):
+    - DifferenceKit (~> 1.1.3)
 
 DEPENDENCIES:
   - SectionedData (from `..`)
@@ -20,8 +20,8 @@ EXTERNAL SOURCES:
     :path: ".."
 
 SPEC CHECKSUMS:
-  DifferenceKit: d501e37b866e98a8aaee0f61ceb02ad98e52b9c1
-  SectionedData: f362a1800163ab4aca574300aa3fb8fbcf2ee2be
+  DifferenceKit: 516f12e336ed65a3a0665847b5c3cb5cad4bd4ea
+  SectionedData: 83c0f19e445441e361ba10270a449effdab1f585
 
 PODFILE CHECKSUM: be56b0547d581355b663d761a14f3515263ac173
 

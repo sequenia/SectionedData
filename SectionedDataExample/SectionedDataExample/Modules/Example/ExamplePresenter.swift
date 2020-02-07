@@ -11,6 +11,7 @@ import UIKit
 
 protocol ExamplePresenter {
     func viewDidLoad()
+    func addItem()
 }
 
 class ExamplePresenterImpl: ExamplePresenter {
@@ -24,6 +25,10 @@ class ExamplePresenterImpl: ExamplePresenter {
     init(view: ExampleView, router: ExampleRouter) {
         self.view = view
         self.router = router
+    }
+    
+    func addItem() {
+        self.view?.show()
     }
 
 }

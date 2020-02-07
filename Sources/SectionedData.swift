@@ -30,6 +30,8 @@ public class SectionedData<SectionEnum: ExtDifferentiable> {
         
     }
     
+    
+    
     public private(set) var items = [ArraySection<SectionEnum, BaseTableCellData>]() {
         didSet {
             self.items.sort { (lhs, rhs) -> Bool in
@@ -82,6 +84,7 @@ public class SectionedData<SectionEnum: ExtDifferentiable> {
     
     public func append(_ item: ArraySection<SectionEnum, BaseTableCellData>) {
         self.items.append(item)
+        
     }
     
     public func replace(_ item: ArraySection<SectionEnum, BaseTableCellData>) {
@@ -95,7 +98,8 @@ public class SectionedData<SectionEnum: ExtDifferentiable> {
             }.first
         
         if tempItem != nil {
-            self.removeAllBy(item.model)
+            self.replace(item)
+            return
         }
         
         self.append(item)
@@ -119,6 +123,10 @@ public class SectionedData<SectionEnum: ExtDifferentiable> {
     }
 }
 
+public protocol DiffComparable {
+    func isEqual(lhs: BaseTableCellData, rhs: BaseTableCellData) -> Bool
+}
+
 open class BaseTableCellData: Differentiable {
     
     public var identifier: Int
@@ -136,7 +144,9 @@ open class BaseTableCellData: Differentiable {
     }
     
     static func == (lhs: BaseTableCellData, rhs: BaseTableCellData) -> Bool {
-        return lhs.identifier == rhs.identifier
+        if let tempLhs = lhs as? DiffComparable {
+            return tempLhs.isEqual(lhs: lhs, rhs: rhs)
+        }
+        return true
     }
-    
 }
